@@ -27,8 +27,31 @@ void displayList(Node* head) {
         y += rowHeight;
     }
 }
+void insertionSort(Node** head) {
+    Node* sorted = NULL;
+    Node* current = *head;
 
+    while (current != NULL) {
+        Node* next = current->next;
+        if (sorted == NULL || sorted->data >= current->data) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            Node* temp = sorted;
+            while (temp->next != NULL && temp->next->data < current->data) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+        current = next;
+    }
 
+    *head = sorted;
+}
+
+Rectangle button = { 300, 600, 100, 70 };
+    bool buttonPressed = false;
 
 void main(){
     InitWindow(800,800,"Project");
@@ -36,17 +59,33 @@ void main(){
     MaximizeWindow();
 Node* head = NULL;
     head = insertAtBeginning(head, 10);
-    head = insertAtBeginning(head, 20);
+    head = insertAtBeginning(head, 40);
     head = insertAtBeginning(head, 30);
 
+
+
     while (!WindowShouldClose())
+{
+    BeginDrawing();
+    ClearBackground(WHITE);
+    Vector2 mousePosition = GetMousePosition();
+
+    if (CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
-        BeginDrawing();
-        ClearBackground(WHITE);
-        displayList(head);
-        EndDrawing();
-        
+        buttonPressed = !buttonPressed; // Inverser l'état du bouton
+        if (buttonPressed) {
+            insertionSort(&head); // Tri seulement lorsque le bouton est pressé
+        }
     }
+
+  displayList(head);
+
+    DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
+    DrawText("trie", (int)(button.x + button.width / 2 - MeasureText("trie", 20) / 2), (int)(button.y + button.height / 2 - 10), 20, WHITE);
+
+    EndDrawing();
+}
+
     while (head != NULL) {
         Node* temp = head;
         head = head->next;
