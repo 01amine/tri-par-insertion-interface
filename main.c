@@ -123,7 +123,7 @@ void main() {
         if (CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             buttonPressed = !buttonPressed;
             if (buttonPressed) {
-                // Compter le nombre d'éléments dans la liste
+                // Compter le nombre d elements dans la liste
                 int count = 0;
                 Node* temp = head;
                 while (temp != NULL) {
