@@ -206,10 +206,10 @@ void main() {
             int value = getInputFromUser();
             head = insertAtBeginning(head, value);
         }
-        // rah hna prblm
+    
         if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             int value = getInputFromUser();
-            deleteNodeWithValue(head, value);
+            deleteNodeWithValue(&head, value);
             
         }
 
