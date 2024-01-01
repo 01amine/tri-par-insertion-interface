@@ -44,9 +44,10 @@ int getInputFromUser() {
         }
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawRectangle(10, 40, 380, 30, LIGHTGRAY);
-        DrawText(inputText, 20, 45, 20, MAROON);
+        ClearBackground(GRAY);
+        DrawRectangle(310, 460, 150, 60, BLACK);
+        DrawRectangleLines(310, 460, 150, 60, LIGHTGRAY);
+        DrawText(inputText, 330, 478, 25, WHITE);
 
         EndDrawing();
     }
