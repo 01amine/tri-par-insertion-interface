@@ -45,8 +45,6 @@ int getInputFromUser() {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
-        DrawText("Clicker sur ENTREE", 10, 10, 20, DARKGRAY);
         DrawRectangle(10, 40, 380, 30, LIGHTGRAY);
         DrawText(inputText, 20, 45, 20, MAROON);
 
