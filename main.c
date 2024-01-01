@@ -15,6 +15,48 @@ Node* insertAtBeginning(Node* head, int data) {
     return newNode;
 }
 
+int getInputFromUser() {
+    bool mouseOnText ;
+    Rectangle textBox = { 1000/2.0f - 100, 180, 225, 50 };
+    if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
+        else mouseOnText = false;
+    if(mouseOnText)SetMouseCursor(MOUSE_CURSOR_IBEAM);
+    int userInput = 0;
+    char inputText[9] = "\0"; 
+    int letterCount = 0;
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose()) {
+        if (IsKeyPressed(KEY_ENTER) && letterCount > 0) {
+            userInput = atoi(inputText); // Convert input string to integer
+            break; 
+        }
+
+        int key = GetKeyPressed();
+
+        
+        if ((key >= 32) && (key <= 125) && (letterCount < 9)) {
+            inputText[letterCount] = (char)key;
+            letterCount++;
+        } else if ((key == KEY_BACKSPACE) && (letterCount > 0)) {
+            letterCount--;
+            inputText[letterCount] = '\0';
+        }
+
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        DrawText("Clicker sur ENTREE", 10, 10, 20, DARKGRAY);
+        DrawRectangle(10, 40, 380, 30, LIGHTGRAY);
+        DrawText(inputText, 20, 45, 20, MAROON);
+
+        EndDrawing();
+    }
+
+    
+
+    return userInput;
+}
 
 void displayList(Node* head, int x, int y) {
     int rowHeight = 50;
@@ -92,25 +134,21 @@ void freeSteps(Node** steps, int stepCount) {
     free(steps);
 }
 
-Rectangle button = { 300, 600, 100, 70 };
+Rectangle button = { 350, 600, 100, 70 };
+Rectangle button2 = { 300, 700, 200, 70 };
 bool buttonPressed = false;
+bool button2Pressed = false;
 
 void main() {
     int val;
-    InitWindow(1000, 1000, "Tri-par-Insertion-Interface");
+    const int screenHeigt = 1000 ;
+    const int screenWidth =1000;
+    InitWindow(screenHeigt, screenWidth, "Tri-par-Insertion-Interface");
     IsWindowResized();
     MaximizeWindow();
 
     Node* head = NULL;
-    head = insertAtBeginning(head, 10);
-    head = insertAtBeginning(head, 40);
-    head = insertAtBeginning(head, 30);
-    head = insertAtBeginning(head, 60);
-    head = insertAtBeginning(head, -10);
-    head = insertAtBeginning(head, -9);
-    head = insertAtBeginning(head, 70);
-    head = insertAtBeginning(head, -100);
-    head = insertAtBeginning(head, 68);
+    
 
     Node** steps;
     int stepCount;
@@ -138,7 +176,10 @@ void main() {
                 insertionSort(head, &steps, &stepCount);
             }
         }
-
+        if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int val = getInputFromUser();
+            head = insertAtBeginning(head, val);
+        }
         DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
         
@@ -152,7 +193,20 @@ void main() {
         }
 
         DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
-        DrawText("Tri", (int)(button.x + button.width / 2 - MeasureText("Tri", 20) / 2), (int)(button.y + button.height / 2 - 10), 20, WHITE);
+        DrawText("Tri",
+         (int)(button.x + button.width / 2 - MeasureText("Tri", 20) / 2),
+          (int)(button.y + button.height / 2 - 10),
+           20,
+            WHITE //Color
+            );
+        DrawRectangleRec(button2, button2Pressed ? DARKGRAY : GRAY);
+        DrawText("Ajouter un element",
+         (int)(button2.x + button2.width / 2 - MeasureText("Ajouter un element", 20) / 2),
+          (int)(button2.y + button2.height / 2 - 10),
+           20,
+            WHITE //Color
+            );
+
 
         EndDrawing();
     }
