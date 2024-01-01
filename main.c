@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include "raylib.h"
@@ -139,32 +138,11 @@ void freeSteps(Node** steps, int stepCount) {
     }
     free(steps);
 }
-void deleteNodeWithValue(Node** head, int value) {
-    Node* current = *head;
-    Node* previous = NULL;
 
-    while (current != NULL && current->data != value) {
-        previous = current;
-        current = current->next;
-    }
-
-    if (current != NULL) {
-        if (previous == NULL) {
-            *head = current->next;
-        } else {
-            previous->next = current->next;
-        }
-
-        free(current);
-    }
-}
-
-Rectangle button = { 350, 600, 100, 70 };
-Rectangle button2 = { 300, 700, 200, 70 };
-Rectangle button3 = { 350, 800, 100, 70 };
+Rectangle button = { 600, 0, 70, 70 };
+Rectangle button2 = { 700, 0, 200, 70 };
 bool buttonPressed = false;
 bool button2Pressed = false;
-bool button3Pressed = false;
 
 void main() {
     int val;
@@ -204,16 +182,9 @@ void main() {
             }
         }
         if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
-            head = insertAtBeginning(head, value);
+            int val = getInputFromUser();
+            head = insertAtBeginning(head, val);
         }
-    
-        if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
-            deleteNodeWithValue(&head, value);
-            
-        }
-
         DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
         
@@ -234,21 +205,11 @@ void main() {
            20,
             WHITE //Color
             );
-// button "ajouter un element"
         DrawRectangleRec(button2, button2Pressed ? DARKGRAY : GRAY);
         DrawRectangleLines(button2.x , button2.y, button2.width, button2.height, BLACK);
         DrawText("Ajouter un element",
          (int)(button2.x + button2.width / 2 - MeasureText("Ajouter un element", 20) / 2),
           (int)(button2.y + button2.height / 2 - 10),
-           20,
-            WHITE //Color
-            );
-// button "Supprimer"
-             DrawRectangleRec(button3, button3Pressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button3.x , button3.y, button3.width, button3.height, BLACK);
-        DrawText("Supprimer",
-         (int)(button3.x + button3.width / 2 - MeasureText("Supprimer", 20) / 2),
-          (int)(button3.y + button3.height / 2 - 10),
            20,
             WHITE //Color
             );
