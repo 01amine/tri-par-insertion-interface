@@ -58,16 +58,23 @@ int getInputFromUser() {
     return userInput;
 }
 
-void displayList(Node* head, int x, int y) {
-    int rowHeight = 50;
+void displayList(Node *l, int x, int y){
+    Node *tmp=l;
+    int i=0;
+    while(tmp !=NULL){
 
-    while (head != NULL) {
-        char text[10];
-        sprintf(text, "%d", head->data);
-        DrawEllipseLines(x, y, 35, 20, BLACK);
-        DrawText(text, x - 5, y - 8, 20, BLACK);
-        head = head->next;
-        x = x + rowHeight + 50;
+            Rectangle rect = {.x=x+i*100, .y=y,.height=60, .width=70};
+            char str[20];
+            sprintf(str, "%d", tmp->data);
+            DrawRectangleRec(rect, LIGHTGRAY);
+            DrawRectangleLinesEx(rect, 2, BLACK);
+            DrawText(str, rect.x + 15, rect.y + 13, 25, BLACK);
+            if(tmp->next!=NULL){
+                DrawLine(rect.x+70, rect.y+35, rect.x+160, rect.y+35, BLACK);
+            }
+        
+        i++;
+        tmp=tmp->next;
     }
 }
 
@@ -155,7 +162,7 @@ void main() {
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(WHITE);
+        ClearBackground(LIGHTGRAY);
         Vector2 mousePosition = GetMousePosition();
 
         if (CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -193,6 +200,7 @@ void main() {
         }
 
         DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button.x , button.y, button.width, button.height, BLACK);
         DrawText("Tri",
          (int)(button.x + button.width / 2 - MeasureText("Tri", 20) / 2),
           (int)(button.y + button.height / 2 - 10),
@@ -200,6 +208,7 @@ void main() {
             WHITE //Color
             );
         DrawRectangleRec(button2, button2Pressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button2.x , button2.y, button2.width, button2.height, BLACK);
         DrawText("Ajouter un element",
          (int)(button2.x + button2.width / 2 - MeasureText("Ajouter un element", 20) / 2),
           (int)(button2.y + button2.height / 2 - 10),
