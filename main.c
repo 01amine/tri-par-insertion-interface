@@ -58,11 +58,20 @@ int getInputFromUser() {
 }
 
 void displayList(Node *l, int x, int y){
-    Node *tmp=l;
-    int i=0;
+    Node *tmp=l; 
+
+    if(tmp!=NULL){
+        Rectangle r ={.x=x, .y=y, .height =60, .width= 80};
+        DrawRectangleRec(r, LIGHTGRAY);
+        DrawRectangleLinesEx(r, 2, BLACK);
+        DrawText("Head", x + 10, y + 13, 25, BLACK);
+        DrawLine(x+80, y+30, x+110, y+30, BLACK);
+    }
+
+    int i=1;
     while(tmp !=NULL){
 
-            Rectangle rect = {.x=x+i*100, .y=y,.height=60, .width=70};
+            Rectangle rect = {.x=x+i*110, .y=y,.height=60, .width=70};
             char str[20];
             sprintf(str, "%d", tmp->data);
             DrawRectangleRec(rect, LIGHTGRAY);
