@@ -141,7 +141,7 @@ void main() {
 
         DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
-        /
+        
         if (buttonPressed) {
             for (int i = 0; i < stepCount; i++) {
                 displayList(steps[i], 100, 100 + i * 100);
