@@ -45,8 +45,6 @@ int getInputFromUser() {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
-        DrawText("Clicker sur ENTREE", 10, 10, 20, DARKGRAY);
         DrawRectangle(10, 40, 380, 30, LIGHTGRAY);
         DrawText(inputText, 20, 45, 20, MAROON);
 
@@ -58,16 +56,23 @@ int getInputFromUser() {
     return userInput;
 }
 
-void displayList(Node* head, int x, int y) {
-    int rowHeight = 50;
+void displayList(Node *l, int x, int y){
+    Node *tmp=l;
+    int i=0;
+    while(tmp !=NULL){
 
-    while (head != NULL) {
-        char text[10];
-        sprintf(text, "%d", head->data);
-        DrawEllipseLines(x, y, 35, 20, BLACK);
-        DrawText(text, x - 5, y - 8, 20, BLACK);
-        head = head->next;
-        x = x + rowHeight + 50;
+            Rectangle rect = {.x=x+i*100, .y=y,.height=60, .width=70};
+            char str[20];
+            sprintf(str, "%d", tmp->data);
+            DrawRectangleRec(rect, LIGHTGRAY);
+            DrawRectangleLinesEx(rect, 2, BLACK);
+            DrawText(str, rect.x + 15, rect.y + 13, 25, BLACK);
+            if(tmp->next!=NULL){
+                DrawLine(rect.x+70, rect.y+35, rect.x+160, rect.y+35, BLACK);
+            }
+        
+        i++;
+        tmp=tmp->next;
     }
 }
 
@@ -133,11 +138,32 @@ void freeSteps(Node** steps, int stepCount) {
     }
     free(steps);
 }
+void deleteNodeWithValue(Node** head, int value) {
+    Node* current = *head;
+    Node* previous = NULL;
+
+    while (current != NULL && current->data != value) {
+        previous = current;
+        current = current->next;
+    }
+
+    if (current != NULL) {
+        if (previous == NULL) {
+            *head = current->next;
+        } else {
+            previous->next = current->next;
+        }
+
+        free(current);
+    }
+}
 
 Rectangle button = { 350, 600, 100, 70 };
 Rectangle button2 = { 300, 700, 200, 70 };
+Rectangle button3 = { 350, 800, 100, 70 };
 bool buttonPressed = false;
 bool button2Pressed = false;
+bool button3Pressed = false;
 
 void main() {
     int val;
@@ -155,7 +181,7 @@ void main() {
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(WHITE);
+        ClearBackground(LIGHTGRAY);
         Vector2 mousePosition = GetMousePosition();
 
         if (CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -177,9 +203,16 @@ void main() {
             }
         }
         if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int val = getInputFromUser();
-            head = insertAtBeginning(head, val);
+            int value = getInputFromUser();
+            head = insertAtBeginning(head, value);
         }
+        // rah hna prblm
+        if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int value = getInputFromUser();
+            deleteNodeWithValue(head, value);
+            
+        }
+
         DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
         
@@ -193,16 +226,28 @@ void main() {
         }
 
         DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button.x , button.y, button.width, button.height, BLACK);
         DrawText("Tri",
          (int)(button.x + button.width / 2 - MeasureText("Tri", 20) / 2),
           (int)(button.y + button.height / 2 - 10),
            20,
             WHITE //Color
             );
+// button "ajouter un element"
         DrawRectangleRec(button2, button2Pressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button2.x , button2.y, button2.width, button2.height, BLACK);
         DrawText("Ajouter un element",
          (int)(button2.x + button2.width / 2 - MeasureText("Ajouter un element", 20) / 2),
           (int)(button2.y + button2.height / 2 - 10),
+           20,
+            WHITE //Color
+            );
+// button "Supprimer"
+             DrawRectangleRec(button3, button3Pressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button3.x , button3.y, button3.width, button3.height, BLACK);
+        DrawText("Supprimer",
+         (int)(button3.x + button3.width / 2 - MeasureText("Supprimer", 20) / 2),
+          (int)(button3.y + button3.height / 2 - 10),
            20,
             WHITE //Color
             );
