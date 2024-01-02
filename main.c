@@ -14,6 +14,21 @@ Node* insertAtBeginning(Node* head, int data) {
     newNode->next = head;
     return newNode;
 }
+Node* insertAtEnd(Node* head, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    if (head == NULL) {
+        return newNode;
+    }
+    Node* current = head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = newNode;
+    return head;
+}
+
 
 int getInputFromUser() {
     bool mouseOnText ;
@@ -171,12 +186,14 @@ void deleteNodeWithValue(Node** head, int value) {
 Rectangle button = { 350, 600, 100, 70 };
 Rectangle button2 = { 300, 700, 200, 70 };
 Rectangle button3 = { 350, 800, 100, 70 };
+Rectangle button4 = { 350, 900, 100, 70 };
 bool buttonPressed = false;
 bool button2Pressed = false;
 bool button3Pressed = false;
+bool button4Pressed = false;
 
 void main() {
-    int val;
+    
     const int screenHeigt = 1000 ;
     const int screenWidth =1000;
     InitWindow(screenHeigt, screenWidth, "Tri-par-Insertion-Interface");
@@ -212,20 +229,8 @@ void main() {
                 insertionSort(head, &steps, &stepCount);
             }
         }
-        if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
-            head = insertAtBeginning(head, value);
-        }
-    
-        if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
-            deleteNodeWithValue(&head, value);
-            
-        }
-
         DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
-        
         if (buttonPressed) {
             for (int i = 0; i < stepCount; i++) {
                 displayList(steps[i], 100, 100 + i * 100);
@@ -234,6 +239,26 @@ void main() {
         } else {
             displayList(head, 100, 100);
         }
+
+        
+         if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int value = getInputFromUser();
+            head = insertAtBeginning(head, value);
+        }
+    
+
+        if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int value = getInputFromUser();
+            deleteNodeWithValue(&head, value);
+            
+        }
+
+
+if(CheckCollisionPointRec(mousePosition, button4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int value = getInputFromUser();
+            head = insertAtEnd(head,value);
+        }
+
 
         DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
         DrawRectangleLines(button.x , button.y, button.width, button.height, BLACK);
@@ -258,6 +283,16 @@ void main() {
         DrawText("Supprimer",
          (int)(button3.x + button3.width / 2 - MeasureText("Supprimer", 20) / 2),
           (int)(button3.y + button3.height / 2 - 10),
+           20,
+            WHITE //Color
+            );
+
+// button "ajouter a la fin "
+            DrawRectangleRec(button4, button4Pressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button4.x , button4.y, button4.width, button4.height, BLACK);
+        DrawText("ajoute a la fin",
+         (int)(button4.x + button4.width / 2 - MeasureText("ajoute a la fin", 20) / 2),
+          (int)(button4.y + button4.height / 2 - 10),
            20,
             WHITE //Color
             );
