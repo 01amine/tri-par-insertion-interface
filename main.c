@@ -205,22 +205,19 @@ void deleteNodeWithValue(Node** head, int value) {
     }
 }
 
-Rectangle button = { 350, 600, 100, 70 };
-Rectangle button2 = { 300, 700, 200, 70 };
-Rectangle button3 = { 350, 800, 100, 70 };
-Rectangle button4 = { 350, 900, 100, 70 };
-Rectangle button5 = { 700, 600, 100, 70 };
-bool buttonPressed = false;
-bool button2Pressed = false;
-bool button3Pressed = false;
-bool button4Pressed = false;
-bool button5Pressed = false;
+Rectangle userMenu = {0, 0, 1000, 78};
+Rectangle addLIFO = { 4, 4, 200, 70 };
+Rectangle addFIFO = { 210, 4, 200, 70 };
+Rectangle addAtPos = { 416, 4, 270, 70 };
+Rectangle deleteButton = { 692, 4, 120, 70 };
+Rectangle sortButton = { 818, 4, 100, 70 };
+bool sortPressed = false;
 
 void main() {
     
     const int screenHeigt = 1000 ;
     const int screenWidth =1000;
-    InitWindow(screenHeigt, screenWidth, "Tri-par-Insertion-Interface");
+    InitWindow(screenHeigt, screenWidth, "Tri-par-Insertion APP");
     IsWindowResized();
     MaximizeWindow();
 
@@ -235,9 +232,9 @@ void main() {
         ClearBackground(LIGHTGRAY);
         Vector2 mousePosition = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePosition, button) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            buttonPressed = !buttonPressed;
-            if (buttonPressed) {
+        if (CheckCollisionPointRec(mousePosition, sortButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            sortPressed = !sortPressed;
+            if (sortPressed) {
                 // Compter le nombre d elements dans la liste
                 int count = 0;
                 Node* temp = head;
@@ -253,84 +250,90 @@ void main() {
                 insertionSort(head, &steps, &stepCount);
             }
         }
-        DrawText("Cliquez sur le bouton pour trier la liste par insertion", 10, 10, 20, RED);
 
-        if (buttonPressed) {
+
+        if (sortPressed) {
             for (int i = 0; i < stepCount; i++) {
-                displayList(steps[i], 100, 100 + i * 100);
+                displayList(steps[i], 100, 150 + i * 100);
             }
-            DrawText("Tri en cours...", 10, 70, 20, RED);
+            DrawText("Tri en cours...", 10, 100, 20, RED);
         } else {
-            displayList(head, 100, 100);
+            displayList(head, 100, 150);
         }
 
         
-         if(CheckCollisionPointRec(mousePosition, button2) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+         if(CheckCollisionPointRec(mousePosition, addLIFO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             int value = getInputFromUser();
             head = insertAtBeginning(head, value);
         }
     
 
-        if(CheckCollisionPointRec(mousePosition, button3) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+        if(CheckCollisionPointRec(mousePosition, deleteButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             int value = getInputFromUser();
             deleteNodeWithValue(&head, value);
             
         }
 
 
-if(CheckCollisionPointRec(mousePosition, button4) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+        if(CheckCollisionPointRec(mousePosition, addFIFO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             int value = getInputFromUser();
             head = insertAtEnd(head,value);
         }
-        if(CheckCollisionPointRec(mousePosition, button5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+
+        if(CheckCollisionPointRec(mousePosition, addAtPos) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             int value = getInputFromUser();
             int position = getInputFromUser();
             head = insertAtPosition(head,value,position);
         }
 
 
-        DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button.x , button.y, button.width, button.height, BLACK);
+//user menu
+        DrawRectangleRec(userMenu, DARKGRAY);
+        DrawRectangleLinesEx(userMenu, 4, BLACK);         
+
+//button "Tri"
+        DrawRectangleRec(sortButton, GRAY);
+        DrawRectangleLines(sortButton.x , sortButton.y, sortButton.width, sortButton.height, BLACK);
         DrawText("Tri",
-         (int)(button.x + button.width / 2 - MeasureText("Tri", 20) / 2),
-          (int)(button.y + button.height / 2 - 10),
+         (int)(sortButton.x + sortButton.width / 2 - MeasureText("Tri", 20) / 2),
+          (int)(sortButton.y + sortButton.height / 2 - 10),
            20,
             WHITE //Color
             );
 // button "ajouter un element"
-        DrawRectangleRec(button2, button2Pressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button2.x , button2.y, button2.width, button2.height, BLACK);
-        DrawText("Ajouter un element",
-         (int)(button2.x + button2.width / 2 - MeasureText("Ajouter un element", 20) / 2),
-          (int)(button2.y + button2.height / 2 - 10),
+        DrawRectangleRec(addLIFO, GRAY);
+        DrawRectangleLines(addLIFO.x , addLIFO.y, addLIFO.width, addLIFO.height, BLACK);
+        DrawText("Ajouter au début",
+         (int)(addLIFO.x + addLIFO.width / 2 - MeasureText("Ajouter au début", 20) / 2),
+          (int)(addLIFO.y + addLIFO.height / 2 - 10),
            20,
             WHITE //Color
             );
 // button "Supprimer"
-             DrawRectangleRec(button3, button3Pressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button3.x , button3.y, button3.width, button3.height, BLACK);
+        DrawRectangleRec(deleteButton, GRAY);
+        DrawRectangleLines(deleteButton.x , deleteButton.y, deleteButton.width, deleteButton.height, BLACK);
         DrawText("Supprimer",
-         (int)(button3.x + button3.width / 2 - MeasureText("Supprimer", 20) / 2),
-          (int)(button3.y + button3.height / 2 - 10),
+         (int)(deleteButton.x + deleteButton.width / 2 - MeasureText("Supprimer", 20) / 2),
+          (int)(deleteButton.y + deleteButton.height / 2 - 10),
            20,
             WHITE //Color
             );
 
 // button "ajouter a la fin "
-            DrawRectangleRec(button4, button4Pressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button4.x , button4.y, button4.width, button4.height, BLACK);
-        DrawText("ajoute a la fin",
-         (int)(button4.x + button4.width / 2 - MeasureText("ajoute a la fin", 20) / 2),
-          (int)(button4.y + button4.height / 2 - 10),
+        DrawRectangleRec(addFIFO, GRAY);
+        DrawRectangleLines(addFIFO.x , addFIFO.y, addFIFO.width, addFIFO.height, BLACK);
+        DrawText("Ajoute a la fin",
+         (int)(addFIFO.x + addFIFO.width / 2 - MeasureText("Ajoute a la fin", 20) / 2),
+          (int)(addFIFO.y + addFIFO.height / 2 - 10),
            20,
             WHITE //Color
             );
 
-             DrawRectangleRec(button5, button5Pressed ? DARKGRAY : GRAY);
-        DrawRectangleLines(button5.x , button5.y, button5.width, button5.height, BLACK);
-        DrawText("Ajoute element a position donnee ",
-         (int)(button5.x + button5.width / 2 - MeasureText("ajoute element a position donnee ", 20) / 2),
-          (int)(button4.y + button4.height / 2 - 10),
+        DrawRectangleRec(addAtPos, GRAY);
+        DrawRectangleLines(addAtPos.x , addAtPos.y, addAtPos.width, addAtPos.height, BLACK);
+        DrawText("Ajoute a position donnée",
+         (int)(addAtPos.x + addAtPos.width / 2 - MeasureText("Ajoute a position donnée", 20) / 2),
+          (int)(addAtPos.y + addAtPos.height / 2 - 10),
            20,
             WHITE //Color
             );
