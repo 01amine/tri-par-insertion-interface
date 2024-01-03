@@ -52,7 +52,7 @@ Node* insertAtPosition(Node* head, int data, int position) {
 
 
 
-int getInputFromUser() {
+int getInputFromUser(char message[50]) {
     bool mouseOnText ;
     Rectangle textBox = { 1000/2.0f - 100, 180, 225, 50 };
     if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
@@ -85,6 +85,7 @@ int getInputFromUser() {
         DrawRectangle(310, 460, 150, 60, BLACK);
         DrawRectangleLines(310, 460, 150, 60, LIGHTGRAY);
         DrawText(inputText, 330, 478, 25, WHITE);
+        DrawText(message, 310, 425, 25, WHITE);
 
         EndDrawing();
     }
@@ -211,6 +212,7 @@ Rectangle addFIFO = { 210, 4, 200, 70 };
 Rectangle addAtPos = { 416, 4, 270, 70 };
 Rectangle deleteButton = { 692, 4, 120, 70 };
 Rectangle sortButton = { 818, 4, 100, 70 };
+Rectangle logo = {918, 4, 82, 70};
 bool sortPressed = false;
 
 void main() {
@@ -251,7 +253,6 @@ void main() {
             }
         }
 
-
         if (sortPressed) {
             for (int i = 0; i < stepCount; i++) {
                 displayList(steps[i], 100, 150 + i * 100);
@@ -263,26 +264,26 @@ void main() {
 
         
          if(CheckCollisionPointRec(mousePosition, addLIFO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
+            int value = getInputFromUser("Ajouter au début");
             head = insertAtBeginning(head, value);
         }
     
 
         if(CheckCollisionPointRec(mousePosition, deleteButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
+            int value = getInputFromUser("Entrez élément que vous voulez supprimer");
             deleteNodeWithValue(&head, value);
             
         }
 
 
         if(CheckCollisionPointRec(mousePosition, addFIFO) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
+            int value = getInputFromUser("Ajoute a la fin");
             head = insertAtEnd(head,value);
         }
 
         if(CheckCollisionPointRec(mousePosition, addAtPos) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int value = getInputFromUser();
-            int position = getInputFromUser();
+            int value = getInputFromUser("Entrer la valeur");
+            int position = getInputFromUser("Entrez la position de la valeur");
             head = insertAtPosition(head,value,position);
         }
 
@@ -337,6 +338,11 @@ void main() {
            20,
             WHITE //Color
             );
+
+// small logo
+        DrawRectangleRec(logo, BLACK);
+        DrawText("</>", 935, 10, 30, WHITE);
+        DrawText("<\\>",935, 40, 30, WHITE);
 
 
         EndDrawing();
