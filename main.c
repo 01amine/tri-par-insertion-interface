@@ -28,6 +28,28 @@ Node* insertAtEnd(Node* head, int data) {
     current->next = newNode;
     return head;
 }
+Node* insertAtPosition(Node* head, int data, int position) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (position == 1) {
+        newNode->next = head;
+        return newNode;
+    }
+    Node* current = head;
+    for (int i = 1; i < position - 1 && current != NULL; i++) {
+        current = current->next;
+    }
+    if (current == NULL) {
+        return insertAtEnd(head, data);
+    }
+    newNode->next = current->next;
+    current->next = newNode;
+
+    return head;
+}
+
 
 
 int getInputFromUser() {
@@ -187,10 +209,12 @@ Rectangle button = { 350, 600, 100, 70 };
 Rectangle button2 = { 300, 700, 200, 70 };
 Rectangle button3 = { 350, 800, 100, 70 };
 Rectangle button4 = { 350, 900, 100, 70 };
+Rectangle button5 = { 700, 600, 100, 70 };
 bool buttonPressed = false;
 bool button2Pressed = false;
 bool button3Pressed = false;
 bool button4Pressed = false;
+bool button5Pressed = false;
 
 void main() {
     
@@ -258,6 +282,11 @@ if(CheckCollisionPointRec(mousePosition, button4) && IsMouseButtonPressed(MOUSE_
             int value = getInputFromUser();
             head = insertAtEnd(head,value);
         }
+        if(CheckCollisionPointRec(mousePosition, button5) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int value = getInputFromUser();
+            int position = getInputFromUser();
+            head = insertAtPosition(head,value,position);
+        }
 
 
         DrawRectangleRec(button, buttonPressed ? DARKGRAY : GRAY);
@@ -292,6 +321,15 @@ if(CheckCollisionPointRec(mousePosition, button4) && IsMouseButtonPressed(MOUSE_
         DrawRectangleLines(button4.x , button4.y, button4.width, button4.height, BLACK);
         DrawText("ajoute a la fin",
          (int)(button4.x + button4.width / 2 - MeasureText("ajoute a la fin", 20) / 2),
+          (int)(button4.y + button4.height / 2 - 10),
+           20,
+            WHITE //Color
+            );
+
+             DrawRectangleRec(button5, button5Pressed ? DARKGRAY : GRAY);
+        DrawRectangleLines(button5.x , button5.y, button5.width, button5.height, BLACK);
+        DrawText("Ajoute element a position donnee ",
+         (int)(button5.x + button5.width / 2 - MeasureText("ajoute element a position donnee ", 20) / 2),
           (int)(button4.y + button4.height / 2 - 10),
            20,
             WHITE //Color
